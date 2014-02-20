@@ -1,0 +1,116 @@
+<div id="container">
+
+  <div id="browser">
+
+    <span class="info">This prototype works best in Firefox.</span>
+    <!-- <div id="content"></div> -->
+    <div id="toolbox">
+
+      <ul id="tabbar">
+        <li class="small-tab"><a class="close"></a></li>
+        <li class="small-tab"><a class="dock"></a></li>
+        <li class="small-tab"><a class="undock"></a></li>
+        <li><a class="inspector">Inspector</a></li>
+        <li><a class="console">Console</a></li>
+        <li><a class="debugger">Debugger</a></li>
+        <li><a class="style-editor">Style Editor</a></li>
+        <li class="selected"><a class="performance">Memory</a></li>
+      </ul>
+
+      <div id="fps">
+        <div id="timeline" timeline left="times.start" right="times.end">
+          <div class="handle left" ng-style="{'left' : leftHandleX + 'px'}"></div>
+          <div class="line left" ng-style="{'left' : leftHandleX + 'px'}"></div>
+          <div class="handle-highlight" ng-style="handleHighlightStyle()"></div>
+          <div class="handle right" ng-style="{'left' : rightHandleX + 'px'}"></div>
+          <div class="line right" ng-style="{'left' : rightHandleX + 'px'}"></div>
+          <div class="record-highlight"></div>
+          <div class="user-mark one"></div>
+          <div class="user-mark two"></div>
+          <div class="line gc" ng-style="{'left' : '16%'}"></div>
+          <div class="line gc" ng-style="{'left' : '76%'}"></div>
+        </div>
+        <div id="flame-chart-thin" flamechart grouped="true" changed="lastChanged" top=10 data="flameData"><svg></svg></div>
+        <div id="details">
+          <div id="graphs">
+              <div id="flame-chart" flamechart top=70 data="selectedData">
+                <svg></svg>
+                <span class="timeline-label left" ng-bind="leftTime + 's'"></span>
+                <span class="timeline-label middle" ng-bind="middleTime + 's'"></span>
+                <span class="timeline-label right" ng-bind="rightTime + 's'"></span>
+              </div>
+              <div id="table-view">
+                <h1>Retaining Tree</h1>
+                  <div class="bar-row header">
+                    <span class="label muted">Constructor <i class="fa fa-unsorted"></i></span>
+                    <span class="label muted">Count</span>
+                    <span class="label muted">Distance</span>
+                    <span class="label muted">Retained Size</span>
+                    <span class="label muted">Shallow Size</span>
+                  </div>
+                <div ng-repeat="series in selectedData">
+                  <div class="bar-row slim">
+                    <span class="label-arrow block-label" ng-style="{backgroundColor: series.color}"></span>
+                    <span class="label bold">{{ series.label }}</span>
+                    <span class="label">{{ selectionDetails[$index] / series.values.length || 0 | number:0 }}</span>
+                    <span class="label">{{ selectionDetails[$index] * 0.001 || 0 | number:0 }}</span>
+                    <span class="label">{{ selectionDetails[$index] * 0.03 / series.values.length || 0 | number:2 }}MB</span>
+                    <span class="label">{{ selectionDetails[$index] * 0.012 / series.values.length || 0 | number:2 }}MB</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <div id="sidebar">
+            <div class="content toolbar">
+              <span class="button small"><i class="fa fa-download"></i></span>
+              <span class="button small"><i class="fa fa-upload"></i></span>
+              <span class="button"><i class="fa fa-trash-o bright-gold"></i>Force GC</span>
+              <span class="button"><i class="fa fa-bookmark bright-purple"></i>Mark</span>
+              <span class="button" ng-click="isPaused = !isPaused" ng-class="{paused: isPaused}">
+                <i ng-if="!isPaused" class="fa fa-pause"></i>
+                <i ng-if="isPaused" class="fa fa-play"></i>
+                <span ng-if="!isPaused">Pause</span>
+                <span ng-if="isPaused">Resume</span>
+              </span>
+              <span class="button record">
+                <i ng-if="!isRecording" class="fa fa-camera bright-red"></i>
+                <i ng-if="isRecording" class="fa fa-square"></i>
+                <span ng-if="!isRecording">Snap</span>
+                <span ng-if="isRecording">Recording</span>
+              </span>
+            </div>
+            <h1>Memory Summary</h1>
+            <div class="content">
+              <div class="column">
+                <h3 class="memory diff" ng-class="{negative: memDiff < 0}">{{ memDiff }}MB</h3><p class="small">({{ startSize }}MB → {{ endSize }}MB)</p>
+              </div>
+              <div class="column">
+                <h3 class="object diff" ng-class="{negative: (endCount - startCount) < 0}">{{ endCount - startCount }} Objects</h3><p class="small">({{ startCount }} → {{ endCount }})</p>
+              </div>
+            </div>
+            <h1>Memory Details</h1>
+            <div class="content rows">
+                <div class="bar-row header">
+                  <span class="label">Constructor</span>
+                  <span class="bar label">Count</span>
+                  <span class="bar label"></span>
+                  <span class="bar label right">Visible</span>
+                </div>
+                <div class="bar-row" ng-repeat="row in selectedData">
+                  <span class="circle-label" ng-style="{backgroundColor: row.color}"></span>
+                  <span class="label" ng-style="{color: row.color}">{{ row.label }}</span>
+                  <span class="label">{{ selectionDetails[$index]  / row.values.length || 0 |number:0 }}</span>
+                  <span class="bar" ng-style="{width: (selectionDetails[$index] / selectionSizeMax * 40) + '%', backgroundColor: row.color}"></span>
+                  <span class="label right">
+                    <i ng-if="$index < 2" class="fa fa-circle visible"></i>
+                    <i ng-if="$index >= 2" class="fa fa-circle-o invisible"></i>
+                  </span>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
