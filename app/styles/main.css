@@ -198,11 +198,22 @@ a.undock:before {
   opacity: 1;
 }
 
+#bottom {
+  display: flex;
+  flex-direction: row;
+}
+
+#list-view {
+  flex: 0 0 15%;
+}
+
+
 #fps {
   display: flex;
   height: 100%;
   background: #1C262D;
   flex-flow: column;
+  position: relative;
 }
 
 #timeline {
@@ -367,7 +378,7 @@ a.undock:before {
   padding-bottom: 3px;
 }
 
-#sidebar h1, #table-view h1 {
+#sidebar h1, #table-view h1, #list-view h1 {
   width: 100%;
   color: rgba(255, 255, 255, 0.4);
   background: #333;
@@ -421,7 +432,7 @@ a.undock:before {
 }
 
 .label {
-  flex: 20% 0 0;
+  flex: 1 0 0;
   color: #B8C7D7;
   padding-left: 15px;
 }

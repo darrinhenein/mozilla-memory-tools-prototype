@@ -17,7 +17,18 @@
         <li class="selected"><a class="performance">Memory</a></li>
       </ul>
 
+      <div id="bottom">
+      <div id="list-view">
+          <h1>Data View</h1>
+          <ul>
+            <li>Live</li>
+            <li>Snapshot - 10:27:54 PM</li>
+            <li>Snapshot - 1:43:56 PM</li>
+            <li>Snapshot - 12:07:00 AM</li>
+          </ul>
+      </div>
       <div id="fps">
+            
         <div id="timeline" timeline left="times.start" right="times.end">
           <div class="handle left" ng-style="{'left' : leftHandleX + 'px'}"></div>
           <div class="line left" ng-style="{'left' : leftHandleX + 'px'}"></div>
@@ -47,6 +58,7 @@
                     <span class="label muted">Distance</span>
                     <span class="label muted">Retained Size</span>
                     <span class="label muted">Shallow Size</span>
+                    <span class="label muted">Visible</span>
                   </div>
                 <div ng-repeat="series in selectedData">
                   <div class="bar-row slim">
@@ -56,6 +68,10 @@
                     <span class="label">{{ selectionDetails[$index] * 0.001 || 0 | number:0 }}</span>
                     <span class="label">{{ selectionDetails[$index] * 0.03 / series.values.length || 0 | number:2 }}MB</span>
                     <span class="label">{{ selectionDetails[$index] * 0.012 / series.values.length || 0 | number:2 }}MB</span>
+                    <span class="label">
+                      <i ng-if="$index < 2" class="fa fa-circle visible"></i>
+                      <i ng-if="$index >= 2" class="fa fa-circle-o invisible"></i>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -88,29 +104,29 @@
                 <h3 class="object diff" ng-class="{negative: (endCount - startCount) < 0}">{{ endCount - startCount }} Objects</h3><p class="small">({{ startCount }} → {{ endCount }})</p>
               </div>
             </div>
-            <h1>Memory Details</h1>
-            <div class="content rows">
-                <div class="bar-row header">
-                  <span class="label">Constructor</span>
-                  <span class="bar label">Count</span>
-                  <span class="bar label"></span>
-                  <span class="bar label right">Visible</span>
-                </div>
-                <div class="bar-row" ng-repeat="row in selectedData">
-                  <span class="circle-label" ng-style="{backgroundColor: row.color}"></span>
-                  <span class="label" ng-style="{color: row.color}">{{ row.label }}</span>
-                  <span class="label">{{ selectionDetails[$index]  / row.values.length || 0 |number:0 }}</span>
-                  <span class="bar" ng-style="{width: (selectionDetails[$index] / selectionSizeMax * 40) + '%', backgroundColor: row.color}"></span>
-                  <span class="label right">
-                    <i ng-if="$index < 2" class="fa fa-circle visible"></i>
-                    <i ng-if="$index >= 2" class="fa fa-circle-o invisible"></i>
-                  </span>
-                </div>
-            </div>
+            <!-- <h1>Memory Details</h1> -->
+            <!-- <div class="content rows"> -->
+            <!--     <div class="bar&#45;row header"> -->
+            <!--       <span class="label">Constructor</span> -->
+            <!--       <span class="bar label">Count</span> -->
+            <!--       <span class="bar label"></span> -->
+            <!--       <span class="bar label right">Visible</span> -->
+            <!--     </div> -->
+            <!--     <div class="bar&#45;row" ng&#45;repeat="row in selectedData"> -->
+            <!--       <span class="circle&#45;label" ng&#45;style="{backgroundColor: row.color}"></span> -->
+            <!--       <span class="label" ng&#45;style="{color: row.color}">{{ row.label }}</span> -->
+            <!--       <span class="label">{{ selectionDetails[$index]  / row.values.length || 0 |number:0 }}</span> -->
+            <!--       <span class="bar" ng&#45;style="{width: (selectionDetails[$index] / selectionSizeMax * 40) + '%', backgroundColor: row.color}"></span> -->
+            <!--       <span class="label right"> -->
+            <!--         <i ng&#45;if="$index < 2" class="fa fa&#45;circle visible"></i> -->
+            <!--         <i ng&#45;if="$index >= 2" class="fa fa&#45;circle&#45;o invisible"></i> -->
+            <!--       </span> -->
+            <!--     </div> -->
+            <!-- </div> -->
           </div>
         </div>
       </div>
-
+    </div>
     </div>
   </div>
 </div>

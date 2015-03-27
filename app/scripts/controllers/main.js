@@ -1,14 +1,15 @@
 angular.module('memtoolsProtoApp')
 .controller('MainCtrl', function ($scope, $window) {
 
-  $scope.leftHandleX = 400;
+  $scope.leftHandleX  = 400;
   $scope.rightHandleX = 500;
+  var leftListViewWidth = $window.innerWidth * 0.15;
 
   $scope.times = {
     start: -7,
     end: 0,
     delta: function(){ return this.start - this.end; }
-  }
+  };
 
   var flameX1, flameX2, isSelecting;
 
@@ -25,8 +26,8 @@ angular.module('memtoolsProtoApp')
 
   var flameColors = ["#E65848", "#FDC536", "#afbc53", "#4CB0E1"];
   var groupColors = ["#9dde64", "#9dde64", "#45515e", "#45515e"];
-  var numFlames = 200;
-  var numStacks = 4;
+  var numFlames   = 200;
+  var numStacks   = 4;
   var flameLabels = ["String", "Array", "Object", "Misc."];
 
   $scope.flameData = stream_layers(numStacks, numFlames ,0.2).map(function(data, i) {
@@ -41,7 +42,7 @@ angular.module('memtoolsProtoApp')
 
   $scope.updateSelectedData = _.throttle(function(){
 
-    var left = ($scope.leftHandleX < $scope.rightHandleX) ? $scope.leftHandleX : $scope.rightHandleX;
+    var left  = ($scope.leftHandleX < $scope.rightHandleX) ? $scope.leftHandleX : $scope.rightHandleX;
     var width = ($scope.leftHandleX < $scope.rightHandleX) ? $scope.rightHandleX - $scope.leftHandleX : $scope.leftHandleX - $scope.rightHandleX;
 
     var x1 =  left / $window.innerWidth;
@@ -115,7 +116,7 @@ angular.module('memtoolsProtoApp')
     axis: 'x',
     drag: function(e, ui) {
       $scope.$apply(function(){
-        $scope.rightHandleX = ui.offset.left;
+        $scope.rightHandleX = ui.offset.left - leftListViewWidth;
         $scope.updateSelectedData();
       });
     }
@@ -125,7 +126,7 @@ angular.module('memtoolsProtoApp')
     axis: 'x',
     drag: function(e, ui) {
       $scope.$apply(function(){
-        $scope.leftHandleX = ui.offset.left;
+        $scope.leftHandleX = ui.offset.left - leftListViewWidth;
         $scope.updateSelectedData();
       });
     }
